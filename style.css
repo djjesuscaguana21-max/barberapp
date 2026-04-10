@@ -75,7 +75,8 @@ button {
   font-size: 22px;
   margin-top: 40px;
   margin-bottom: 20px;
-}
+  text-align: center;
+};
 
 .lista {
   display: flex;
@@ -83,6 +84,7 @@ button {
   gap: 16px;
   max-width: 600px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .barberia {
@@ -93,6 +95,9 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .barberia-info h3 {
@@ -104,4 +109,59 @@ button {
 .barberia-info p {
   font-size: 13px;
   color: #888888;
+}
+
+nav {
+  background-color: #1a1a1a;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+}
+
+.nav-links a {
+  color: #aaaaaa;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.nav-links a:hover {
+  color: white;
+}
+
+.estrellas {
+  font-size: 13px;
+  color: #f0a500;
+  margin-top: 4px;
+  display: block;
+}
+.botones-barberia {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-mapa {
+  background-color: white;
+  color: #1a1a1a;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-mapa:hover {
+  background-color: #f7f7f7;
 }
