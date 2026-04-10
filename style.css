@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #1a1a1a;
+}
+
+header {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 32px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+header p {
+  font-size: 16px;
+  color: #aaaaaa;
+}
+
+main {
+  padding: 32px;
+  text-align: center;
+}
+
+main h2 {
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.opciones {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.tarjeta {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 32px;
+  width: 260px;
+}
+
+.tarjeta h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.tarjeta p {
+  font-size: 14px;
+  color: #888888;
+  margin-bottom: 24px;
+}
+
+button {
+  background-color: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.subtitulo {
+  font-size: 22px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.barberia {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.barberia-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.barberia-info p {
+  font-size: 13px;
+  color: #888888;
+}
