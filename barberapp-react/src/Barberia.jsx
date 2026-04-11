@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom'
+
 function Barberia({ nombre, distancia, estrellas }) {
+  const navigate = useNavigate()
+
   return (
     <div style={{
       background: 'white',
@@ -15,14 +19,16 @@ function Barberia({ nombre, distancia, estrellas }) {
         <p style={{ color: '#888', fontSize: '13px' }}>{distancia}</p>
         <span style={{ color: '#f0a500', fontSize: '13px' }}>{estrellas}</span>
       </div>
-      <button style={{
-        background: '#1a1a1a',
-        color: 'white',
-        border: 'none',
-        borderRadius: '12px',
-        padding: '12px 24px',
-        cursor: 'pointer'
-      }}>
+      <button
+        onClick={() => navigate('/barberia')}
+        style={{
+          background: '#1a1a1a',
+          color: 'white',
+          border: 'none',
+          borderRadius: '12px',
+          padding: '12px 24px',
+          cursor: 'pointer'
+        }}>
         Agendar
       </button>
     </div>

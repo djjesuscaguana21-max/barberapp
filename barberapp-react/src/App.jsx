@@ -1,7 +1,9 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Barberia from './Barberia'
 import Barbero from './Barbero'
+import DetalleBarberia from './DetalleBarberia'
 
-function App() {
+function Inicio() {
   return (
     <div style={{ background: '#f7f7f7', minHeight: '100vh', padding: '32px' }}>
 
@@ -37,6 +39,17 @@ function App() {
       </div>
 
     </div>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="/barberia" element={<DetalleBarberia />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
