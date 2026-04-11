@@ -3,6 +3,9 @@ import Barberia from './Barberia'
 import Barbero from './Barbero'
 import DetalleBarberia from './DetalleBarberia'
 import AgendarCita from './AgendarCita'
+import Confirmacion from './Confirmacion'
+import Exito from './Exito'
+
 
 function Inicio() {
   return (
@@ -33,6 +36,8 @@ function App() {
         <Route path="/" element={<Inicio />} />
         <Route path="/barberia" element={<DetalleBarberia />} />
         <Route path="/agendar" element={<AgendarCita />} />
+        <Route path="/confirmacion" element={<Confirmacion />} />
+        <Route path="/exito" element={<Exito />} />
       </Routes>
     </BrowserRouter>
   )

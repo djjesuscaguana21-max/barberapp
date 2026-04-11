@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 function AgendarCita() {
   const navigate = useNavigate()
+  const [horarioSeleccionado, setHorarioSeleccionado] = useState(null)
 
   const horarios = [
     { hora: '09:00', disponible: false },
@@ -28,25 +30,20 @@ function AgendarCita() {
         <h2 style={{ marginBottom: '8px' }}>Elegir horario</h2>
         <p style={{ color: '#888', marginBottom: '24px' }}>Barbería Alpha · Corte clásico</p>
 
-        <div style={{
-          background: 'white',
-          borderRadius: '16px',
-          padding: '24px',
-          border: '1px solid #e0e0e0',
-          marginBottom: '16px'
-        }}>
+        <div style={{ background: 'white', borderRadius: '16px', padding: '24px', border: '1px solid #e0e0e0', marginBottom: '16px' }}>
           <h3 style={{ marginBottom: '16px' }}>Horarios disponibles</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
             {horarios.map((h) => (
               <button
                 key={h.hora}
                 disabled={!h.disponible}
+                onClick={() => setHorarioSeleccionado(h.hora)}
                 style={{
                   padding: '12px',
                   borderRadius: '12px',
                   border: '1px solid #e0e0e0',
-                  background: h.disponible ? 'white' : '#f5f5f5',
-                  color: h.disponible ? '#1a1a1a' : '#bbbbbb',
+                  background: horarioSeleccionado === h.hora ? '#1a1a1a' : h.disponible ? 'white' : '#f5f5f5',
+                  color: horarioSeleccionado === h.hora ? 'white' : h.disponible ? '#1a1a1a' : '#bbbbbb',
                   cursor: h.disponible ? 'pointer' : 'not-allowed',
                   fontSize: '14px',
                   fontWeight: '500'
@@ -57,17 +54,24 @@ function AgendarCita() {
           </div>
         </div>
 
+        {horarioSeleccionado && (
+          <p style={{ textAlign: 'center', color: '#888', marginBottom: '16px', fontSize: '14px' }}>
+            Horario seleccionado: <strong style={{ color: '#1a1a1a' }}>{horarioSeleccionado}</strong>
+          </p>
+        )}
+
         <button
           onClick={() => navigate('/confirmacion')}
+          disabled={!horarioSeleccionado}
           style={{
             width: '100%',
-            background: '#1a1a1a',
+            background: horarioSeleccionado ? '#1a1a1a' : '#cccccc',
             color: 'white',
             border: 'none',
             borderRadius: '16px',
             padding: '16px',
             fontSize: '16px',
-            cursor: 'pointer'
+            cursor: horarioSeleccionado ? 'pointer' : 'not-allowed'
           }}>
           Confirmar horario →
         </button>
