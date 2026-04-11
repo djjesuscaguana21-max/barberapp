@@ -1,23 +1,17 @@
-function DetalleBarberia() {
+import { useNavigate } from 'react-router-dom'
+
+ function DetalleBarberia() {
+  const navigate = useNavigate()
+
   return (
     <div style={{ background: '#f7f7f7', minHeight: '100vh', padding: '32px' }}>
-
-
-<button
-  onClick={() => window.history.back()}
-  style={{
-    background: 'none',
-    border: 'none',
-    fontSize: '14px',
-    color: '#888',
-    cursor: 'pointer',
-    marginBottom: '16px',
-    padding: '0'
-  }}>
-  ← Volver
-</button>
-
       <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+
+        <button
+          onClick={() => window.history.back()}
+          style={{ background: 'none', border: 'none', fontSize: '14px', color: '#888', cursor: 'pointer', marginBottom: '16px', padding: '0' }}>
+          ← Volver
+        </button>
 
         <h2 style={{ marginBottom: '8px' }}>Barbería Alpha</h2>
         <p style={{ color: '#888', marginBottom: '24px' }}>0.3 km · Diadema</p>
@@ -44,17 +38,19 @@ function DetalleBarberia() {
           </div>
         </div>
 
-        <button style={{
-          width: '100%',
-          background: '#1a1a1a',
-          color: 'white',
-          border: 'none',
-          borderRadius: '16px',
-          padding: '16px',
-          fontSize: '16px',
-          cursor: 'pointer'
-        }}>
-          Agendar cita
+        <button
+          onClick={() => navigate('/agendar')}
+          style={{
+            width: '100%',
+            background: '#1a1a1a',
+            color: 'white',
+            border: 'none',
+            borderRadius: '16px',
+            padding: '16px',
+            fontSize: '16px',
+            cursor: 'pointer'
+          }}>
+          Agendar cita →
         </button>
 
       </div>
