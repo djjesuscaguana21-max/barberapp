@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import Barberia from './Barberia'
 import Barbero from './Barbero'
 import DetalleBarberia from './DetalleBarberia'
@@ -6,8 +7,15 @@ import AgendarCita from './AgendarCita'
 import Confirmacion from './Confirmacion'
 import Exito from './Exito'
 
-
 function Inicio() {
+  const [barberias, setBarberias] = useState([])
+
+  useEffect(() => {
+    fetch('http://localhost:3000/barberias')
+      .then(res => res.json())
+      .then(data => setBarberias(data))
+  }, [])
+
   return (
     <div style={{ background: '#f7f7f7', minHeight: '100vh', padding: '32px' }}>
       <header style={{ background: '#1a1a1a', color: 'white', padding: '32px', textAlign: 'center', borderRadius: '16px', marginBottom: '32px' }}>
@@ -16,9 +24,9 @@ function Inicio() {
       </header>
       <h2 style={{ textAlign: 'center', marginBottom: '24px' }}>Barberías cerca de ti</h2>
       <div style={{ maxWidth: '600px', margin: '0 auto', marginBottom: '40px' }}>
-        <Barberia nombre="Barbería Alpha" distancia="0.3 km · Diadema" estrellas="★★★★★ 4.9" />
-        <Barberia nombre="Barber Club" distancia="0.8 km · Diadema" estrellas="★★★★☆ 4.6" />
-        <Barberia nombre="Studio Corte" distancia="1.2 km · Diadema" estrellas="★★★★★ 4.8" />
+        {barberias.map(b => (
+          <Barberia key={b.id} nombre={b.nombre} distancia={b.distancia} estrellas={b.estrellas} />
+        ))}
       </div>
       <h2 style={{ textAlign: 'center', marginBottom: '24px' }}>Barberos a domicilio</h2>
       <div style={{ maxWidth: '600px', margin: '0 auto' }}>
