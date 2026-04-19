@@ -11,7 +11,7 @@ function Inicio() {
   const [barberias, setBarberias] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:3000/barberias')
+    fetch('https://barberapp-1-gudl.onrender.com/barberias')
       .then(res => res.json())
       .then(data => setBarberias(data))
   }, [])
