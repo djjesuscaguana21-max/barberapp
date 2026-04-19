@@ -1,8 +1,11 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
 
 function AgendarCita() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const barberia = searchParams.get('barberia') || 'Barberia Alpha'
+  const servicio = searchParams.get('servicio') || 'Corte clasico'
   const [horarioSeleccionado, setHorarioSeleccionado] = useState(null)
 
   const horarios = [
@@ -21,14 +24,10 @@ function AgendarCita() {
     <div style={{ background: '#f7f7f7', minHeight: '100vh', padding: '32px' }}>
       <div style={{ maxWidth: '600px', margin: '0 auto' }}>
 
-        <button
-          onClick={() => window.history.back()}
-          style={{ background: 'none', border: 'none', fontSize: '14px', color: '#888', cursor: 'pointer', marginBottom: '16px', padding: '0' }}>
-          ← Volver
-        </button>
+        <button onClick={() => window.history.back()} style={{ background: 'none', border: 'none', fontSize: '14px', color: '#888', cursor: 'pointer', marginBottom: '16px', padding: '0' }}>← Volver</button>
 
         <h2 style={{ marginBottom: '8px' }}>Elegir horario</h2>
-        <p style={{ color: '#888', marginBottom: '24px' }}>Barbería Alpha · Corte clásico</p>
+        <p style={{ color: '#888', marginBottom: '24px' }}>{barberia} · {servicio}</p>
 
         <div style={{ background: 'white', borderRadius: '16px', padding: '24px', border: '1px solid #e0e0e0', marginBottom: '16px' }}>
           <h3 style={{ marginBottom: '16px' }}>Horarios disponibles</h3>
@@ -61,7 +60,7 @@ function AgendarCita() {
         )}
 
         <button
-          onClick={() => navigate('/confirmacion')}
+          onClick={() => navigate(`/confirmacion?hora=${horarioSeleccionado}&barberia=${encodeURIComponent(barberia)}&servicio=${encodeURIComponent(servicio)}`)}
           disabled={!horarioSeleccionado}
           style={{
             width: '100%',
@@ -79,4 +78,6 @@ function AgendarCita() {
       </div>
     </div>
   )
-}export default AgendarCita
+}
+
+export default AgendarCita

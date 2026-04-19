@@ -1,23 +1,27 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 function Confirmacion() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const hora = searchParams.get('hora') || '10:30'
+  const barberia = searchParams.get('barberia') || 'Barberia Alpha'
+  const servicio = searchParams.get('servicio') || 'Corte clasico'
 
   const confirmarCita = () => {
     fetch('https://barberapp-1-gudl.onrender.com/citas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        barberia: 'Barberia Alpha',
-        servicio: 'Corte clasico',
-        hora: '10:30',
-        fecha: '2026-04-19'
+        barberia: barberia,
+        servicio: servicio,
+        hora: hora,
+        fecha: new Date().toISOString().split('T')[0]
       })
     })
     .then(res => res.json())
     .then(data => {
       console.log('Cita guardada:', data)
-      navigate('/exito')
+      navigate(`/exito?hora=${hora}&barberia=${barberia}&servicio=${servicio}`)
     })
   }
 
@@ -29,16 +33,20 @@ function Confirmacion() {
         <div style={{ background: 'white', borderRadius: '16px', padding: '24px', border: '1px solid #e0e0e0', marginBottom: '16px' }}>
           <h3 style={{ marginBottom: '16px' }}>Resumen</h3>
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
-            <span style={{ color: '#888' }}>Barbería</span><span style={{ fontWeight: '600' }}>Barbería Alpha</span>
+            <span style={{ color: '#888' }}>Barbería</span>
+            <span style={{ fontWeight: '600' }}>{barberia}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
-            <span style={{ color: '#888' }}>Servicio</span><span style={{ fontWeight: '600' }}>Corte clásico</span>
+            <span style={{ color: '#888' }}>Servicio</span>
+            <span style={{ fontWeight: '600' }}>{servicio}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
-            <span style={{ color: '#888' }}>Hora</span><span style={{ fontWeight: '600' }}>10:30</span>
+            <span style={{ color: '#888' }}>Hora</span>
+            <span style={{ fontWeight: '600' }}>{hora}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0' }}>
-            <span style={{ color: '#888' }}>Total</span><span style={{ fontWeight: '700', fontSize: '18px' }}>R$35</span>
+            <span style={{ color: '#888' }}>Total</span>
+            <span style={{ fontWeight: '700', fontSize: '18px' }}>R$35</span>
           </div>
         </div>
         <button onClick={confirmarCita} style={{ width: '100%', background: '#1a1a1a', color: 'white', border: 'none', borderRadius: '16px', padding: '16px', fontSize: '16px', cursor: 'pointer' }}>

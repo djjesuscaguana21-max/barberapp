@@ -20,7 +20,7 @@ function Barberia({ nombre, distancia, estrellas }) {
         <span style={{ color: '#f0a500', fontSize: '13px' }}>{estrellas}</span>
       </div>
       <button
-        onClick={() => navigate('/barberia')}
+        onClick={() => navigate(`/barberia?nombre=${encodeURIComponent(nombre)}`)}
         style={{
           background: '#1a1a1a',
           color: 'white',

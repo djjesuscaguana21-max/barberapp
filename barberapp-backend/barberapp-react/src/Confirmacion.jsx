@@ -4,7 +4,7 @@ function Confirmacion() {
   const navigate = useNavigate()
 
   const confirmarCita = () => {
-    fetch('http://localhost:3000/citas', {
+    fetch('https://barberapp-1-gudl.onrender.com/citas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
