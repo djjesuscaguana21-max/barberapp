@@ -10,6 +10,7 @@ import MisCitas from './MisCitas'
 import Perfil from './Perfil'
 import PanelBarbero from './PanelBarbero'
 import Login from './Login'
+import Landing from './Landing'
 
 function Inicio() {
   const navigate = useNavigate()
@@ -149,6 +150,7 @@ function App() {
         <Route path="/agendar" element={<AgendarCita />} />
         <Route path="/confirmacion" element={<Confirmacion />} />
         <Route path="/exito" element={<Exito />} />
+        <Route path="/landing" element={<Landing />} />
       </Routes>
     </BrowserRouter>
   )
