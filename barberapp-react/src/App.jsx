@@ -11,6 +11,7 @@ import Perfil from './Perfil'
 import PanelBarbero from './PanelBarbero'
 import Login from './Login'
 import Landing from './Landing'
+import PerfilBarbero from './PerfilBarbero'
 
 function Inicio() {
   const navigate = useNavigate()
@@ -26,8 +27,7 @@ function Inicio() {
   return (
     <div style={{ background: '#ffffff', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif', paddingBottom: '80px' }}>
 
-      {/* Header */}
-      <div style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)', padding: '20px 24px 20px', position: 'sticky', top: 0, zIndex: 100 }}>
+      <div style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)', padding: '20px 24px 16px', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div>
             <p style={{ color: '#888', fontSize: '12px', margin: 0 }}>📍 Ubicación actual</p>
@@ -48,22 +48,20 @@ function Inicio() {
 
       <div style={{ padding: '20px 24px' }}>
 
-        {/* Banner promocional */}
         <div style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)', borderRadius: '20px', padding: '20px', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <p style={{ color: '#f0a500', fontSize: '11px', fontWeight: '700', margin: 0, letterSpacing: '1px' }}>NUEVO EN DIADEMA</p>
-            <p style={{ color: 'white', fontSize: '18px', fontWeight: '700', margin: '6px 0 4px', lineHeight: 1.2 }}>Agenda tu cita{'\n'}en segundos</p>
+            <p style={{ color: 'white', fontSize: '18px', fontWeight: '700', margin: '6px 0 4px', lineHeight: 1.2 }}>Agenda tu cita en segundos</p>
             <p style={{ color: '#888', fontSize: '12px', margin: 0 }}>Sin esperas, sin llamadas</p>
           </div>
           <div style={{ fontSize: '52px' }}>✂️</div>
         </div>
 
-        {/* Categorias */}
         <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
-          <button onClick={() => setCategoria('barberia')} style={{ flex: 1, padding: '14px 10px', borderRadius: '16px', border: 'none', background: categoria === 'barberia' ? '#1a1a1a' : '#f5f5f5', color: categoria === 'barberia' ? 'white' : '#555', fontWeight: '600', fontSize: '13px', cursor: 'pointer', transition: 'all 0.2s' }}>
+          <button onClick={() => setCategoria('barberia')} style={{ flex: 1, padding: '14px 10px', borderRadius: '16px', border: 'none', background: categoria === 'barberia' ? '#1a1a1a' : '#f5f5f5', color: categoria === 'barberia' ? 'white' : '#555', fontWeight: '600', fontSize: '13px', cursor: 'pointer' }}>
             ✂️ Barbería
           </button>
-          <button onClick={() => setCategoria('domicilio')} style={{ flex: 1, padding: '14px 10px', borderRadius: '16px', border: 'none', background: categoria === 'domicilio' ? '#1a1a1a' : '#f5f5f5', color: categoria === 'domicilio' ? 'white' : '#555', fontWeight: '600', fontSize: '13px', cursor: 'pointer', transition: 'all 0.2s' }}>
+          <button onClick={() => setCategoria('domicilio')} style={{ flex: 1, padding: '14px 10px', borderRadius: '16px', border: 'none', background: categoria === 'domicilio' ? '#1a1a1a' : '#f5f5f5', color: categoria === 'domicilio' ? 'white' : '#555', fontWeight: '600', fontSize: '13px', cursor: 'pointer' }}>
             🏠 Domicilio
           </button>
         </div>
@@ -81,7 +79,7 @@ function Inicio() {
               </div>
             ) : (
               barberias.map(b => (
-                <Barberia key={b.id} nombre={b.nombre} distancia={b.distancia} estrellas={b.estrellas} />
+                <Barberia key={b.id} nombre={b.nombre} distancia={b.distancia} estrellas={b.estrellas} direccion={b.direccion} foto={b.foto} />
               ))
             )}
           </div>
@@ -107,13 +105,12 @@ function Inicio() {
               </div>
             </div>
             <p style={{ fontSize: '17px', fontWeight: '700', color: '#000', marginBottom: '16px' }}>Disponibles ahora</p>
-            <Barbero nombre="Juan Ramírez" especialidad="Barbero profesional · 5 años" estrellas="★★★★★ 4.9" />
-            <Barbero nombre="Miguel Ferreira" especialidad="Especialista en degradê · 3 años" estrellas="★★★★☆ 4.6" />
+            <Barbero nombre="Juan Ramirez" especialidad="Especialista en degradê y cortes modernos" estrellas="4.9" foto="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=300" direccion="Rua das Flores 123, Diadema SP" />
+            <Barbero nombre="Miguel Ferreira" especialidad="Experto en barba y cortes clasicos" estrellas="4.6" foto="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300" direccion="Av. Principal 456, Diadema SP" />
           </div>
         )}
       </div>
 
-      {/* Bottom nav */}
       <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'white', borderTop: '1px solid #f0f0f0', display: 'flex', padding: '10px 0 20px' }}>
         <div onClick={() => setCategoria('barberia')} style={{ flex: 1, textAlign: 'center', cursor: 'pointer' }}>
           <div style={{ fontSize: '22px' }}>🏠</div>
@@ -151,6 +148,7 @@ function App() {
         <Route path="/confirmacion" element={<Confirmacion />} />
         <Route path="/exito" element={<Exito />} />
         <Route path="/landing" element={<Landing />} />
+        <Route path="/perfilbarbero" element={<PerfilBarbero />} />
       </Routes>
     </BrowserRouter>
   )

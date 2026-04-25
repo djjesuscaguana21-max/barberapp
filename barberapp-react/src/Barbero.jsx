@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 
-function Barbero({ nombre, especialidad, estrellas }) {
+function Barbero({ nombre, especialidad, estrellas, foto, direccion }) {
   const navigate = useNavigate()
 
   return (
     <div
-      onClick={() => navigate(`/barberia?nombre=${encodeURIComponent(nombre)}`)}
+      onClick={() => navigate(`/perfilbarbero?nombre=${encodeURIComponent(nombre)}`)}
       style={{
         background: 'white',
         border: '1px solid #f0f0f0',
@@ -19,13 +19,11 @@ function Barbero({ nombre, especialidad, estrellas }) {
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
       }}>
 
-      <div style={{
-        width: '56px', height: '56px', background: '#f5f5f5',
-        borderRadius: '50%', display: 'flex', alignItems: 'center',
-        justifyContent: 'center', fontSize: '24px', flexShrink: 0
-      }}>
-        💈
-      </div>
+      <img
+        src={foto || 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=100'}
+        alt={nombre}
+        style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+      />
 
       <div style={{ flex: 1 }}>
         <p style={{ fontWeight: '700', fontSize: '15px', color: '#000', margin: '0 0 4px' }}>{nombre}</p>
@@ -35,7 +33,7 @@ function Barbero({ nombre, especialidad, estrellas }) {
 
       <div style={{ textAlign: 'right' }}>
         <p style={{ fontSize: '12px', color: '#888', margin: '0 0 8px' }}>A domicilio</p>
-        <div style={{ background: '#000', color: 'white', borderRadius: '8px', padding: '6px 12px', fontSize: '12px', fontWeight: '600' }}>
+        <div style={{ background: '#000', color: 'white', borderRadius: '8px', padding: '8px 14px', fontSize: '12px', fontWeight: '600' }}>
           Solicitar
         </div>
       </div>
