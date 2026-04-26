@@ -68,21 +68,16 @@ async function initDB() {
   await pool.query(`ALTER TABLE barberos ADD COLUMN IF NOT EXISTS foto TEXT`)
   await pool.query(`ALTER TABLE barberos ADD COLUMN IF NOT EXISTS direccion TEXT`)
 
-  const serviciosExist = await pool.query('SELECT COUNT(*) FROM servicios')
-  if (parseInt(serviciosExist.rows[0].count) === 0) {
-    await pool.query(`INSERT INTO servicios (nombre, duracion, precio, categoria, foto) VALUES
-      ('Corte clasico', '30 min', 35, 'hombre', 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=300'),
-      ('Corte + barba', '50 min', 55, 'hombre', 'https://images.unsplash.com/photo-1621605815971-8a2a6c2b2f6b?w=300'),
-      ('Degrade', '40 min', 45, 'hombre', 'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=300'),
-      ('Barba completa', '30 min', 30, 'hombre', 'https://images.unsplash.com/photo-1520897497135-d5f4eaeac3a8?w=300'),
-      ('Corte navaja', '45 min', 50, 'hombre', 'https://images.unsplash.com/photo-1593702288056-7cc0e7b71cd5?w=300'),
-      ('Corte feminino', '45 min', 55, 'mujer', 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=300'),
-      ('Escova', '40 min', 45, 'mujer', 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=300'),
-      ('Tintura', '90 min', 120, 'mujer', 'https://images.unsplash.com/photo-1519699852466-0b8b65f4be7b?w=300'),
-      ('Hidratacao', '60 min', 80, 'mujer', 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=300'),
-      ('Corte infantil', '20 min', 25, 'infantil', 'https://images.unsplash.com/photo-1519744346361-7a029b427a59?w=300')
-    `)
-  }
+  await pool.query(`UPDATE servicios SET foto = 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=300' WHERE nombre = 'Corte clasico' AND foto IS NULL`)
+  await pool.query(`UPDATE servicios SET foto = 'https://images.unsplash.com/photo-1621605815971-8a2a6c2b2f6b?w=300' WHERE nombre = 'Corte + barba' AND foto IS NULL`)
+  await pool.query(`UPDATE servicios SET foto = 'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=300' WHERE nombre = 'Degrade' AND foto IS NULL`)
+  await pool.query(`UPDATE servicios SET foto = 'https://images.unsplash.com/photo-1520897497135-d5f4eaeac3a8?w=300' WHERE nombre = 'Barba completa' AND foto IS NULL`)
+  await pool.query(`UPDATE servicios SET foto = 'https://images.unsplash.com/photo-1593702288056-7cc0e7b71cd5?w=300' WHERE nombre = 'Corte navaja' AND foto IS NULL`)
+  await pool.query(`UPDATE servicios SET foto = 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=300' WHERE nombre = 'Corte feminino' AND foto IS NULL`)
+  await pool.query(`UPDATE servicios SET foto = 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=300' WHERE nombre = 'Escova' AND foto IS NULL`)
+  await pool.query(`UPDATE servicios SET foto = 'https://images.unsplash.com/photo-1519699852466-0b8b65f4be7b?w=300' WHERE nombre = 'Tintura' AND foto IS NULL`)
+  await pool.query(`UPDATE servicios SET foto = 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=300' WHERE nombre = 'Hidratacao' AND foto IS NULL`)
+  await pool.query(`UPDATE servicios SET foto = 'https://images.unsplash.com/photo-1519744346361-7a029b427a59?w=300' WHERE nombre = 'Corte infantil' AND foto IS NULL`)
 
   const barberosExist = await pool.query('SELECT COUNT(*) FROM barberos')
   if (parseInt(barberosExist.rows[0].count) === 0) {
