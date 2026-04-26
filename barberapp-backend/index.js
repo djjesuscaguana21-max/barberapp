@@ -210,5 +210,4 @@ app.put('/horarios/:barbero_id', async (req, res) => {
   res.json({ mensaje: 'Horarios actualizados' })
 })
 
-app.listen(3000, () => console.log('Servidor corriendo'))/ /   d e p l o y   0 4 / 2 6 / 2 0 2 6   2 0 : 4 7 : 1 8  
- 
+app.listen(3000, () => console.log('Servidor corriendo'))
