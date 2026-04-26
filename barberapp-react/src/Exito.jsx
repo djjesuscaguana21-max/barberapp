@@ -6,40 +6,45 @@ function Exito() {
   const hora = searchParams.get('hora') || '10:30'
   const barberia = searchParams.get('barberia') || 'Barberia Alpha'
   const servicio = searchParams.get('servicio') || 'Corte clasico'
+  const fecha = searchParams.get('fecha') || new Date().toISOString().split('T')[0]
+
+  const fechaFormateada = new Date(fecha + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric' })
 
   return (
-    <div style={{ background: '#f7f7f7', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ maxWidth: '400px', width: '100%', textAlign: 'center', padding: '32px' }}>
+    <div style={{ background: '#f7f7f7', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px' }}>
 
-        <div style={{ width: '80px', height: '80px', background: '#d4edda', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', fontSize: '36px' }}>
-          ✓
-        </div>
+      <div style={{ width: '80px', height: '80px', background: '#d4edda', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', marginBottom: '20px' }}>✓</div>
 
-        <h2 style={{ marginBottom: '8px' }}>¡Cita confirmada!</h2>
-        <p style={{ color: '#888', marginBottom: '32px', lineHeight: '1.6' }}>
-          Tu cita en {barberia} fue agendada para hoy a las {hora}.
-        </p>
+      <h2 style={{ fontSize: '24px', fontWeight: '800', color: '#000', margin: '0 0 8px', textAlign: 'center' }}>¡Cita confirmada!</h2>
+      <p style={{ color: '#888', fontSize: '14px', margin: '0 0 32px', textAlign: 'center' }}>Tu cita ha sido agendada exitosamente</p>
 
-        <div style={{ background: 'white', borderRadius: '16px', padding: '20px', border: '1px solid #e0e0e0', marginBottom: '24px', textAlign: 'left' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
-            <span style={{ color: '#888' }}>Barbería</span>
-            <span style={{ fontWeight: '600' }}>{barberia}</span>
+      <div style={{ background: 'white', borderRadius: '20px', padding: '20px', width: '100%', maxWidth: '360px', marginBottom: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+        {[
+          { icon: '✂️', label: 'Barbería', value: barberia },
+          { icon: '💈', label: 'Servicio', value: servicio },
+          { icon: '📅', label: 'Fecha', value: fechaFormateada },
+          { icon: '🕐', label: 'Hora', value: hora },
+        ].map((item, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: i < 3 ? '1px solid #f5f5f5' : 'none' }}>
+            <div style={{ width: '32px', height: '32px', background: '#f5f5f5', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', flexShrink: 0 }}>
+              {item.icon}
+            </div>
+            <div style={{ flex: 1 }}>
+              <p style={{ color: '#888', fontSize: '11px', margin: 0, textTransform: 'uppercase' }}>{item.label}</p>
+              <p style={{ fontWeight: '600', fontSize: '14px', margin: '2px 0 0', color: '#000' }}>{item.value}</p>
+            </div>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
-            <span style={{ color: '#888' }}>Servicio</span>
-            <span style={{ fontWeight: '600' }}>{servicio}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0' }}>
-            <span style={{ color: '#888' }}>Hora</span>
-            <span style={{ fontWeight: '600' }}>{hora}</span>
-          </div>
-        </div>
-
-        <button onClick={() => navigate('/')} style={{ width: '100%', background: '#1a1a1a', color: 'white', border: 'none', borderRadius: '16px', padding: '16px', fontSize: '16px', cursor: 'pointer' }}>
-          Volver al inicio
-        </button>
-
+        ))}
       </div>
+
+      <button onClick={() => navigate('/')} style={{ width: '100%', maxWidth: '360px', background: '#000', color: 'white', border: 'none', borderRadius: '16px', padding: '16px', fontSize: '16px', fontWeight: '700', cursor: 'pointer', marginBottom: '12px' }}>
+        Volver al inicio
+      </button>
+
+      <button onClick={() => navigate('/miscitas')} style={{ width: '100%', maxWidth: '360px', background: 'white', color: '#000', border: '1px solid #e0e0e0', borderRadius: '16px', padding: '16px', fontSize: '15px', fontWeight: '600', cursor: 'pointer' }}>
+        Ver mis citas
+      </button>
+
     </div>
   )
 }

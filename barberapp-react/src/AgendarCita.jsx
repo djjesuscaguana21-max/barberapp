@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function AgendarCita() {
   const navigate = useNavigate()
@@ -7,69 +7,109 @@ function AgendarCita() {
   const barberia = searchParams.get('barberia') || 'Barberia Alpha'
   const servicio = searchParams.get('servicio') || 'Corte clasico'
   const [horarioSeleccionado, setHorarioSeleccionado] = useState(null)
+  const [horarios, setHorarios] = useState([])
+  const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date().toISOString().split('T')[0])
 
-  const horarios = [
-    { hora: '09:00', disponible: false },
-    { hora: '09:30', disponible: false },
-    { hora: '10:00', disponible: true },
-    { hora: '10:30', disponible: true },
-    { hora: '11:00', disponible: true },
-    { hora: '11:30', disponible: false },
-    { hora: '14:00', disponible: true },
-    { hora: '14:30', disponible: true },
-    { hora: '15:00', disponible: true },
-  ]
+  useEffect(() => {
+    fetch('https://barberapp-1-gudl.onrender.com/horarios/1')
+      .then(res => res.json())
+      .then(data => {
+        const slots = generarSlots(data.hora_inicio, data.hora_fin)
+        setHorarios(slots)
+      })
+      .catch(() => {
+        setHorarios(generarSlots('09:00', '19:00'))
+      })
+  }, [])
+
+  const generarSlots = (inicio, fin) => {
+    const slots = []
+    let [h, m] = inicio.split(':').map(Number)
+    const [hFin, mFin] = fin.split(':').map(Number)
+    while (h < hFin || (h === hFin && m < mFin)) {
+      slots.push(`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`)
+      m += 30
+      if (m >= 60) { m = 0; h++ }
+    }
+    return slots
+  }
+
+  const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+  const hoy = new Date()
+  const dias = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(hoy)
+    d.setDate(hoy.getDate() + i)
+    return d
+  })
 
   return (
-    <div style={{ background: '#f7f7f7', minHeight: '100vh', padding: '32px' }}>
-      <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+    <div style={{ background: '#f7f7f7', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif', paddingBottom: '32px' }}>
 
-        <button onClick={() => window.history.back()} style={{ background: 'none', border: 'none', fontSize: '14px', color: '#888', cursor: 'pointer', marginBottom: '16px', padding: '0' }}>← Volver</button>
+      {/* Header */}
+      <div style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)', padding: '20px 24px 28px' }}>
+        <button onClick={() => window.history.back()} style={{ background: 'none', border: 'none', color: '#888', fontSize: '14px', cursor: 'pointer', padding: '0 0 12px' }}>← Volver</button>
+        <h2 style={{ color: 'white', margin: 0, fontSize: '20px', fontWeight: '700' }}>Elegir horario</h2>
+        <p style={{ color: '#888', margin: '4px 0 0', fontSize: '13px' }}>{barberia} · {servicio}</p>
+      </div>
 
-        <h2 style={{ marginBottom: '8px' }}>Elegir horario</h2>
-        <p style={{ color: '#888', marginBottom: '24px' }}>{barberia} · {servicio}</p>
+      <div style={{ padding: '20px 24px' }}>
 
-        <div style={{ background: 'white', borderRadius: '16px', padding: '24px', border: '1px solid #e0e0e0', marginBottom: '16px' }}>
-          <h3 style={{ marginBottom: '16px' }}>Horarios disponibles</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
-            {horarios.map((h) => (
-              <button
-                key={h.hora}
-                disabled={!h.disponible}
-                onClick={() => setHorarioSeleccionado(h.hora)}
-                style={{
-                  padding: '12px',
-                  borderRadius: '12px',
-                  border: '1px solid #e0e0e0',
-                  background: horarioSeleccionado === h.hora ? '#1a1a1a' : h.disponible ? 'white' : '#f5f5f5',
-                  color: horarioSeleccionado === h.hora ? 'white' : h.disponible ? '#1a1a1a' : '#bbbbbb',
-                  cursor: h.disponible ? 'pointer' : 'not-allowed',
-                  fontSize: '14px',
-                  fontWeight: '500'
-                }}>
-                {h.hora}
-              </button>
-            ))}
-          </div>
+        {/* Selector de fecha */}
+        <p style={{ fontSize: '14px', fontWeight: '700', color: '#000', margin: '0 0 12px' }}>Selecciona un día</p>
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', overflowX: 'auto', paddingBottom: '4px' }}>
+          {dias.map((dia, i) => {
+            const fechaStr = dia.toISOString().split('T')[0]
+            const seleccionado = fechaStr === fechaSeleccionada
+            return (
+              <div key={i} onClick={() => setFechaSeleccionada(fechaStr)} style={{ flexShrink: 0, width: '56px', padding: '10px 0', borderRadius: '14px', textAlign: 'center', background: seleccionado ? '#000' : 'white', cursor: 'pointer', border: seleccionado ? 'none' : '1px solid #e0e0e0' }}>
+                <p style={{ fontSize: '11px', color: seleccionado ? '#888' : '#aaa', margin: '0 0 4px', fontWeight: '500' }}>{diasSemana[dia.getDay()]}</p>
+                <p style={{ fontSize: '18px', fontWeight: '700', color: seleccionado ? 'white' : '#000', margin: 0 }}>{dia.getDate()}</p>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Horarios */}
+        <p style={{ fontSize: '14px', fontWeight: '700', color: '#000', margin: '0 0 12px' }}>Horarios disponibles</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '24px' }}>
+          {horarios.map((hora) => (
+            <button
+              key={hora}
+              onClick={() => setHorarioSeleccionado(hora)}
+              style={{
+                padding: '14px 0',
+                borderRadius: '12px',
+                border: horarioSeleccionado === hora ? 'none' : '1px solid #e0e0e0',
+                background: horarioSeleccionado === hora ? '#000' : 'white',
+                color: horarioSeleccionado === hora ? 'white' : '#1a1a1a',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '600'
+              }}>
+              {hora}
+            </button>
+          ))}
         </div>
 
         {horarioSeleccionado && (
-          <p style={{ textAlign: 'center', color: '#888', marginBottom: '16px', fontSize: '14px' }}>
-            Horario seleccionado: <strong style={{ color: '#1a1a1a' }}>{horarioSeleccionado}</strong>
-          </p>
+          <div style={{ background: '#f0f0f0', borderRadius: '12px', padding: '12px 16px', marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ margin: 0, fontSize: '13px', color: '#555' }}>Horario seleccionado</p>
+            <p style={{ margin: 0, fontSize: '15px', fontWeight: '700', color: '#000' }}>{fechaSeleccionada} · {horarioSeleccionado}</p>
+          </div>
         )}
 
         <button
-          onClick={() => navigate(`/confirmacion?hora=${horarioSeleccionado}&barberia=${encodeURIComponent(barberia)}&servicio=${encodeURIComponent(servicio)}`)}
+          onClick={() => navigate(`/confirmacion?hora=${horarioSeleccionado}&barberia=${encodeURIComponent(barberia)}&servicio=${encodeURIComponent(servicio)}&fecha=${fechaSeleccionada}`)}
           disabled={!horarioSeleccionado}
           style={{
             width: '100%',
-            background: horarioSeleccionado ? '#1a1a1a' : '#cccccc',
+            background: horarioSeleccionado ? '#000' : '#ccc',
             color: 'white',
             border: 'none',
             borderRadius: '16px',
             padding: '16px',
             fontSize: '16px',
+            fontWeight: '700',
             cursor: horarioSeleccionado ? 'pointer' : 'not-allowed'
           }}>
           Confirmar horario →
