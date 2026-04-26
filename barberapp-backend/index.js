@@ -51,6 +51,14 @@ pool.query(`CREATE TABLE IF NOT EXISTS clientes (
   foto TEXT
 )`)
 
+pool.query(`CREATE TABLE IF NOT EXISTS horarios (
+  id SERIAL PRIMARY KEY,
+  barbero_id INTEGER,
+  hora_inicio TEXT,
+  hora_fin TEXT,
+  dias TEXT DEFAULT 'lunes,martes,miercoles,jueves,viernes,sabado'
+)`)
+
 pool.query(`
   INSERT INTO servicios (nombre, duracion, precio, categoria, foto)
   SELECT * FROM (VALUES
@@ -75,6 +83,12 @@ pool.query(`
     ('Miguel Ferreira', 'Experto en barba y cortes clásicos', 4.6, 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300', 'Av. Principal 456, Diadema SP', 'Barbero con 3 años de experiencia. Me especializo en cortes clásicos y arreglo de barba.', 'domicilio')
   ) AS v(nombre, especialidad, estrellas, foto, direccion, bio, modo)
   WHERE NOT EXISTS (SELECT 1 FROM barberos LIMIT 1)
+`)
+
+pool.query(`
+  INSERT INTO horarios (barbero_id, hora_inicio, hora_fin)
+  SELECT * FROM (VALUES (1, '09:00', '19:00'), (2, '10:00', '20:00')) AS v(barbero_id, hora_inicio, hora_fin)
+  WHERE NOT EXISTS (SELECT 1 FROM horarios LIMIT 1)
 `)
 
 app.get('/barberias', (req, res) => res.json([
@@ -119,10 +133,10 @@ app.get('/barberos', async (req, res) => {
 
 app.put('/barberos/:id', async (req, res) => {
   const { id } = req.params
-  const { nombre, especialidad, direccion, bio, foto, disponible } = req.body
+  const { nombre, especialidad, direccion, bio, foto, disponible, modo } = req.body
   const result = await pool.query(
-    'UPDATE barberos SET nombre = COALESCE($1, nombre), especialidad = COALESCE($2, especialidad), direccion = COALESCE($3, direccion), bio = COALESCE($4, bio), foto = COALESCE($5, foto), disponible = COALESCE($6, disponible) WHERE id = $7 RETURNING *',
-    [nombre, especialidad, direccion, bio, foto, disponible, id]
+    'UPDATE barberos SET nombre = COALESCE($1, nombre), especialidad = COALESCE($2, especialidad), direccion = COALESCE($3, direccion), bio = COALESCE($4, bio), foto = COALESCE($5, foto), disponible = COALESCE($6, disponible), modo = COALESCE($7, modo) WHERE id = $8 RETURNING *',
+    [nombre, especialidad, direccion, bio, foto, disponible, modo, id]
   )
   res.json({ mensaje: 'Barbero actualizado', barbero: result.rows[0] })
 })
@@ -178,6 +192,22 @@ app.put('/citas/:id', async (req, res) => {
 app.delete('/citas/:id', async (req, res) => {
   await pool.query('DELETE FROM citas WHERE id = $1', [req.params.id])
   res.json({ mensaje: 'Cita cancelada' })
+})
+
+app.get('/horarios/:barbero_id', async (req, res) => {
+  const result = await pool.query('SELECT * FROM horarios WHERE barbero_id = $1', [req.params.barbero_id])
+  res.json(result.rows[0] || { hora_inicio: '09:00', hora_fin: '19:00', dias: 'lunes,martes,miercoles,jueves,viernes,sabado' })
+})
+
+app.put('/horarios/:barbero_id', async (req, res) => {
+  const { hora_inicio, hora_fin, dias } = req.body
+  const existe = await pool.query('SELECT id FROM horarios WHERE barbero_id = $1', [req.params.barbero_id])
+  if (existe.rows.length > 0) {
+    await pool.query('UPDATE horarios SET hora_inicio = $1, hora_fin = $2, dias = $3 WHERE barbero_id = $4', [hora_inicio, hora_fin, dias, req.params.barbero_id])
+  } else {
+    await pool.query('INSERT INTO horarios (barbero_id, hora_inicio, hora_fin, dias) VALUES ($1, $2, $3, $4)', [req.params.barbero_id, hora_inicio, hora_fin, dias])
+  }
+  res.json({ mensaje: 'Horarios actualizados' })
 })
 
 app.listen(3000, () => console.log('Servidor corriendo'))
